@@ -248,18 +248,5 @@ if (verifyBtn) {
         oscillator.onended = () => audio.close();
       } catch (error) {
         console.log("Sound unavailable:", error);
-      }
-
-    }, 1200);
-  });
-}
-
-// SHOW SELECTED FILE
-if (documentInput) {
-  documentInput.addEventListener("change", () => {
-    const file = documentInput.files[0];
-    document.getElementById("fileDetails").textContent =
-      file ? "Selected: " + file.name : "No document selected";
-  });
-}
+      
 
