@@ -4,35 +4,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0866df">
-
+  <meta name="theme-color" content="#075bd8">
   <title>GLOMING | Document Scanner</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-  <!-- INTRO ANIMATION -->
+  <!-- INTRO -->
   <section id="intro" class="intro">
     <div class="intro-logo">G</div>
     <h1>GLOMING</h1>
-    <p>DOCUMENT SCANNER & SIGNATURE DEMO</p>
+    <p>DOCUMENT SCANNER SYSTEM</p>
+    <div class="intro-loader"></div>
   </section>
 
-  <!-- LOGIN PAGE -->
+  <!-- LOGIN -->
   <section id="loginPage" class="login-page hidden">
-
     <div class="login-card">
-
       <div class="brand-icon">G</div>
-
       <h1>GLOMING</h1>
-      <p>Owner Dashboard Login</p>
+      <p class="login-subtitle">Owner Dashboard Login</p>
 
       <form id="loginForm">
-
         <label for="email">Email Address</label>
         <input
           type="email"
@@ -51,79 +44,76 @@
           required
         >
 
+        <p id="loginError" class="error-text"></p>
+
         <button type="submit" class="primary-btn">
           LOGIN TO DASHBOARD
         </button>
-
       </form>
 
-      <p id="loginError"></p>
-
       <small>GLOMING Professional Document Scanner</small>
-
     </div>
   </section>
 
-  <!-- MAIN DASHBOARD -->
+  <!-- DASHBOARD -->
   <main id="dashboard" class="dashboard hidden">
 
-    <!-- HEADER -->
     <header class="topbar">
-
       <div class="brand">
-
         <div class="brand-icon">G</div>
-
         <div>
           <h2>GLOMING</h2>
           <small>Document Scanner System</small>
         </div>
-
       </div>
 
       <button id="logoutBtn" class="logout-btn" type="button">
         LOGOUT
       </button>
-
     </header>
 
-    <!-- WELCOME -->
     <section class="welcome">
-
+      <span class="eyebrow">OWNER WORKSPACE</span>
       <h1>Document Verification</h1>
-
-      <p>
-        Upload or scan a document to view its demo verification result.
-      </p>
-
+      <p>Upload or scan a document to see its demo result.</p>
     </section>
 
     <!-- STATISTICS -->
     <section class="stats">
-
       <div class="stat-card">
+        <div class="stat-symbol blue-symbol">▤</div>
         <h3 id="totalScans">0</h3>
         <p>Total Scans</p>
       </div>
 
       <div class="stat-card">
+        <div class="stat-symbol green-symbol">✓</div>
         <h3 id="verifiedCount">0</h3>
         <p>Verified Demo</p>
       </div>
 
       <div class="stat-card">
+        <div class="stat-symbol red-symbol">✕</div>
         <h3 id="failedCount">0</h3>
         <p>Not Verified Demo</p>
       </div>
-
     </section>
 
-    <!-- DOCUMENT SCANNER -->
+    <!-- UPLOAD AND CAMERA -->
     <section class="scanner-card">
+      <div class="section-heading">
+        <span class="section-number">01</span>
+        <div>
+          <h2>Upload Document</h2>
+          <p>Select PDF, JPG or PNG file. Maximum size 10 MB.</p>
+        </div>
+      </div>
 
-      <h2>Upload Document</h2>
-
-      <p>Select a PDF, JPG or PNG document.</p>
+      <label for="documentInput" class="upload-area">
+        <span class="upload-icon">↑</span>
+        <strong>Choose a document</strong>
+        <small>Click here to browse your files</small>
+      </label>
 
       <input
         type="file"
@@ -135,117 +125,92 @@
         No document selected
       </div>
 
-      <button
-        id="verifyBtn"
-        class="primary-btn"
-        type="button"
-      >
+      <button id="verifyBtn" class="primary-btn full-btn" type="button">
         CHECK DOCUMENT
       </button>
 
-      <div class="camera-divider">
+      <div class="or-divider">
+        <span></span>
         OR SCAN WITH CAMERA
+        <span></span>
       </div>
 
-      <!-- CAMERA BUTTON -->
-      <button
-        id="cameraBtn"
-        class="secondary-btn"
-        type="button"
-      >
-        OPEN CAMERA
+      <button id="cameraBtn" class="secondary-btn full-btn" type="button">
+        <span>▣</span> OPEN CAMERA
       </button>
 
-      <!-- CAMERA PREVIEW -->
-      <video
-        id="camera"
-        class="hidden"
-        autoplay
-        playsinline
-        muted
-      ></video>
+      <div class="camera-container">
+        <video
+          id="camera"
+          class="hidden"
+          autoplay
+          playsinline
+          muted
+        ></video>
+      </div>
 
-      <!-- CAPTURE CANVAS -->
       <canvas id="canvas" class="hidden"></canvas>
 
-      <!-- CAPTURE BUTTON -->
-      <button
-        id="captureBtn"
-        class="primary-btn hidden"
-        type="button"
-      >
+      <button id="captureBtn" class="capture-btn hidden" type="button">
         CAPTURE DOCUMENT
       </button>
 
+      <p class="camera-note">
+        Camera access requires browser permission and a secure page
+        (localhost or HTTPS).
+      </p>
     </section>
 
-    <!-- VERIFICATION RESULT -->
+    <!-- RESULT -->
     <section class="result-card">
+      <div class="result-topline">
+        <span class="section-number">02</span>
+        <h2>Verification Result</h2>
+      </div>
 
       <div id="resultPlaceholder">
-
-        <div class="result-placeholder-icon">
-          ✓
-        </div>
-
-        <h2>Verification Result</h2>
-
-        <p>
-          Your document result will appear here.
-        </p>
-
+        <div class="placeholder-icon">✓</div>
+        <h3>Waiting for document</h3>
+        <p>Your demo result will appear here after checking.</p>
       </div>
 
       <div id="resultBox" class="hidden">
-
         <div id="resultIcon" class="result-icon"></div>
-
         <h2 id="resultTitle"></h2>
-
         <p id="resultMessage"></p>
-
+        <span class="demo-label">SIMULATED DEMO RESULT</span>
       </div>
-
     </section>
 
-    <!-- SCAN HISTORY -->
+    <!-- HISTORY -->
     <section class="history-card">
-
       <div class="history-heading">
+        <div>
+          <span class="section-number">03</span>
+          <h2>Scan History</h2>
+        </div>
 
-        <h2>Scan History</h2>
-
-        <button
-          id="clearHistory"
-          type="button"
-        >
+        <button id="clearHistory" type="button">
           CLEAR HISTORY
         </button>
-
       </div>
 
       <div id="historyList">
-        <p>No scan history yet.</p>
+        <p class="empty-history">No scan history yet.</p>
       </div>
-
     </section>
 
-    <!-- FOOTER -->
     <footer>
-
+      <div class="footer-logo">GLOMING</div>
       <p>© 2026 GLOMING. All Rights Reserved.</p>
-
       <small>
-        Demo only. Green/red results are simulated and do not establish
-        the authenticity of a document or digital signature.
+        Demo only. Results are simulated and do not establish
+        document authenticity or digital-signature validity.
       </small>
-
     </footer>
 
   </main>
 
-  <!-- JAVASCRIPT -->
   <script src="script.js"></script>
-
 </body>
 </html>
