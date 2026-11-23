@@ -1,5 +1,5 @@
 
-const DEMO_EMAIL = "ganapatisahu@gmail.com
+const DEMO_EMAIL = "ganapatisahu@gmail.com"
 const DEMO_PASSWORD = "@SAHU0029@
 
 const intro = document.getElementById("intro");
