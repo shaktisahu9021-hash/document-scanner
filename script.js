@@ -1,6 +1,6 @@
 
-const DEMO_EMAIL = "owner@gloming.in";
-const DEMO_PASSWORD = "Gloming@2026#Owner";
+const DEMO_EMAIL = "ganapatisahu@gmail.com
+const DEMO_PASSWORD = "@SAHU0029@
 
 const intro = document.getElementById("intro");
 const loginPage = document.getElementById("loginPage");
