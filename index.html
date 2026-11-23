@@ -4,80 +4,126 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0756c9">
+  <meta name="theme-color" content="#0866df">
+
   <title>GLOMING | Document Scanner</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <!-- INTRO -->
+  <!-- INTRO ANIMATION -->
   <section id="intro" class="intro">
     <div class="intro-logo">G</div>
     <h1>GLOMING</h1>
     <p>DOCUMENT SCANNER & SIGNATURE DEMO</p>
   </section>
 
-  <!-- LOGIN -->
+  <!-- LOGIN PAGE -->
   <section id="loginPage" class="login-page hidden">
+
     <div class="login-card">
+
       <div class="brand-icon">G</div>
+
       <h1>GLOMING</h1>
       <p>Owner Dashboard Login</p>
 
       <form id="loginForm">
-        <label>Email Address</label>
-        <input type="email" id="email" placeholder="Enter email" required>
 
-        <label>Password</label>
-        <input type="password" id="password" placeholder="Enter password" required>
+        <label for="email">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="Enter your email"
+          autocomplete="username"
+          required
+        >
 
-        <button type="submit" class="primary-btn">LOGIN</button>
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          required
+        >
+
+        <button type="submit" class="primary-btn">
+          LOGIN TO DASHBOARD
+        </button>
+
       </form>
 
       <p id="loginError"></p>
-      <small>GLOMING Document Scanner Demo</small>
+
+      <small>GLOMING Professional Document Scanner</small>
+
     </div>
   </section>
 
-  <!-- DASHBOARD -->
+  <!-- MAIN DASHBOARD -->
   <main id="dashboard" class="dashboard hidden">
 
+    <!-- HEADER -->
     <header class="topbar">
+
       <div class="brand">
+
         <div class="brand-icon">G</div>
+
         <div>
           <h2>GLOMING</h2>
-          <small>Document Scanner</small>
+          <small>Document Scanner System</small>
         </div>
+
       </div>
-      <button id="logoutBtn" class="logout-btn">Logout</button>
+
+      <button id="logoutBtn" class="logout-btn" type="button">
+        LOGOUT
+      </button>
+
     </header>
 
+    <!-- WELCOME -->
     <section class="welcome">
+
       <h1>Document Verification</h1>
-      <p>Scan, upload and check your documents.</p>
+
+      <p>
+        Upload or scan a document to view its demo verification result.
+      </p>
+
     </section>
 
     <!-- STATISTICS -->
     <section class="stats">
+
       <div class="stat-card">
         <h3 id="totalScans">0</h3>
         <p>Total Scans</p>
       </div>
+
       <div class="stat-card">
         <h3 id="verifiedCount">0</h3>
         <p>Verified Demo</p>
       </div>
+
       <div class="stat-card">
         <h3 id="failedCount">0</h3>
         <p>Not Verified Demo</p>
       </div>
+
     </section>
 
-    <!-- SCANNER -->
+    <!-- DOCUMENT SCANNER -->
     <section class="scanner-card">
+
       <h2>Upload Document</h2>
-      <p>Select PDF, JPG or PNG file.</p>
+
+      <p>Select a PDF, JPG or PNG document.</p>
 
       <input
         type="file"
@@ -89,164 +135,117 @@
         No document selected
       </div>
 
-      <button id="verifyBtn" class="primary-btn" type="button">
+      <button
+        id="verifyBtn"
+        class="primary-btn"
+        type="button"
+      >
         CHECK DOCUMENT
       </button>
 
-      <div class="camera-divider">OR SCAN WITH CAMERA</div>
+      <div class="camera-divider">
+        OR SCAN WITH CAMERA
+      </div>
 
-      <button id="cameraBtn" class="secondary-btn" type="button">
-        Open Camera
+      <!-- CAMERA BUTTON -->
+      <button
+        id="cameraBtn"
+        class="secondary-btn"
+        type="button"
+      >
+        OPEN CAMERA
       </button>
 
-      <video id="camera" autoplay playsinline class="hidden"></video>
+      <!-- CAMERA PREVIEW -->
+      <video
+        id="camera"
+        class="hidden"
+        autoplay
+        playsinline
+        muted
+      ></video>
+
+      <!-- CAPTURE CANVAS -->
       <canvas id="canvas" class="hidden"></canvas>
 
-      <button id="captureBtn" class="primary-btn hidden" type="button">
-        Capture Document
+      <!-- CAPTURE BUTTON -->
+      <button
+        id="captureBtn"
+        class="primary-btn hidden"
+        type="button"
+      >
+        CAPTURE DOCUMENT
       </button>
+
     </section>
 
-    <!-- RESULT -->
+    <!-- VERIFICATION RESULT -->
     <section class="result-card">
+
       <div id="resultPlaceholder">
-        <div class="result-placeholder-icon">✓</div>
+
+        <div class="result-placeholder-icon">
+          ✓
+        </div>
+
         <h2>Verification Result</h2>
-        <p>Your result will appear here.</p>
+
+        <p>
+          Your document result will appear here.
+        </p>
+
       </div>
 
       <div id="resultBox" class="hidden">
+
         <div id="resultIcon" class="result-icon"></div>
+
         <h2 id="resultTitle"></h2>
+
         <p id="resultMessage"></p>
+
       </div>
+
     </section>
 
-    <!-- HISTORY -->
+    <!-- SCAN HISTORY -->
     <section class="history-card">
+
       <div class="history-heading">
+
         <h2>Scan History</h2>
-        <button id="clearHistory" type="button">Clear History</button>
+
+        <button
+          id="clearHistory"
+          type="button"
+        >
+          CLEAR HISTORY
+        </button>
+
       </div>
 
       <div id="historyList">
         <p>No scan history yet.</p>
       </div>
+
     </section>
 
+    <!-- FOOTER -->
     <footer>
-      <p>© 2026 GLOMING | Document Scanner Demo</p>
-      <small>Results are simulated and are not genuine digital-signature verification.</small>
+
+      <p>© 2026 GLOMING. All Rights Reserved.</p>
+
+      <small>
+        Demo only. Green/red results are simulated and do not establish
+        the authenticity of a document or digital signature.
+      </small>
+
     </footer>
 
   </main>
 
+  <!-- JAVASCRIPT -->
   <script src="script.js"></script>
+
 </body>
 </html>
-
-// DOCUMENT VERIFICATION DEMO
-
-const documentInput = document.getElementById("documentInput");
-const verifyBtn = document.getElementById("verifyBtn");
-
-if (verifyBtn) {
-  verifyBtn.addEventListener("click", function () {
-
-    const file = documentInput.files[0];
-
-    if (!file) {
-      alert("Please select or capture a document first.");
-      return;
-    }
-
-    const allowedTypes = [
-      "application/pdf",
-      "image/jpeg",
-      "image/png"
-    ];
-
-    if (!allowedTypes.includes(file.type)) {
-      alert("Please select PDF, JPG or PNG file.");
-      return;
-    }
-
-    const placeholder = document.getElementById("resultPlaceholder");
-    const resultBox = document.getElementById("resultBox");
-    const resultIcon = document.getElementById("resultIcon");
-    const resultTitle = document.getElementById("resultTitle");
-    const resultMessage = document.getElementById("resultMessage");
-
-    verifyBtn.disabled = true;
-    verifyBtn.textContent = "CHECKING...";
-
-    placeholder.classList.add("hidden");
-    resultBox.classList.add("hidden");
-
-    setTimeout(() => {
-
-      // SIMULATED DEMO RESULT: 15% green, 85% red
-      const verified = Math.random() < 0.15;
-
-      resultBox.classList.remove("hidden");
-      resultBox.classList.remove("verified", "not-verified");
-
-      if (verified) {
-        resultBox.classList.add("verified");
-        resultIcon.textContent = "✓";
-        resultTitle.textContent = "VERIFIED";
-        resultMessage.textContent =
-          "Demo result: Simulated verification success.";
-      } else {
-        resultBox.classList.add("not-verified");
-        resultIcon.textContent = "✕";
-        resultTitle.textContent = "NOT VERIFIED";
-        resultMessage.textContent =
-          "Demo result: Signature could not be verified.";
-      }
-
-      const total = document.getElementById("totalScans");
-      const success = document.getElementById("verifiedCount");
-      const failed = document.getElementById("failedCount");
-      const history = document.getElementById("historyList");
-
-      total.textContent = Number(total.textContent) + 1;
-
-      if (verified) {
-        success.textContent = Number(success.textContent) + 1;
-      } else {
-        failed.textContent = Number(failed.textContent) + 1;
-      }
-
-      if (history.textContent.includes("No scan history")) {
-        history.innerHTML = "";
-      }
-
-      const item = document.createElement("div");
-      item.className = "history-item";
-      item.textContent =
-        file.name + " — " + (verified ? "VERIFIED (DEMO)" : "NOT VERIFIED (DEMO)");
-
-      history.prepend(item);
-
-      verifyBtn.disabled = false;
-      verifyBtn.textContent = "CHECK DOCUMENT";
-
-      // Sound
-      try {
-        const audio = new AudioContext();
-        const oscillator = audio.createOscillator();
-        const gain = audio.createGain();
-
-        oscillator.connect(gain);
-        gain.connect(audio.destination);
-        oscillator.frequency.value = verified ? 880 : 220;
-        gain.gain.value = 0.12;
-
-        oscillator.start();
-        oscillator.stop(audio.currentTime + 0.25);
-        oscillator.onended = () => audio.close();
-      } catch (error) {
-        console.log("Sound unavailable:", error);
-      
-
