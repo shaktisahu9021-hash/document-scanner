@@ -144,3 +144,122 @@
   <script src="script.js"></script>
 </body>
 </html>
+
+// DOCUMENT VERIFICATION DEMO
+
+const documentInput = document.getElementById("documentInput");
+const verifyBtn = document.getElementById("verifyBtn");
+
+if (verifyBtn) {
+  verifyBtn.addEventListener("click", function () {
+
+    const file = documentInput.files[0];
+
+    if (!file) {
+      alert("Please select or capture a document first.");
+      return;
+    }
+
+    const allowedTypes = [
+      "application/pdf",
+      "image/jpeg",
+      "image/png"
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+      alert("Please select PDF, JPG or PNG file.");
+      return;
+    }
+
+    const placeholder = document.getElementById("resultPlaceholder");
+    const resultBox = document.getElementById("resultBox");
+    const resultIcon = document.getElementById("resultIcon");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultMessage = document.getElementById("resultMessage");
+
+    verifyBtn.disabled = true;
+    verifyBtn.textContent = "CHECKING...";
+
+    placeholder.classList.add("hidden");
+    resultBox.classList.add("hidden");
+
+    setTimeout(() => {
+
+      // SIMULATED DEMO RESULT: 15% green, 85% red
+      const verified = Math.random() < 0.15;
+
+      resultBox.classList.remove("hidden");
+      resultBox.classList.remove("verified", "not-verified");
+
+      if (verified) {
+        resultBox.classList.add("verified");
+        resultIcon.textContent = "✓";
+        resultTitle.textContent = "VERIFIED";
+        resultMessage.textContent =
+          "Demo result: Simulated verification success.";
+      } else {
+        resultBox.classList.add("not-verified");
+        resultIcon.textContent = "✕";
+        resultTitle.textContent = "NOT VERIFIED";
+        resultMessage.textContent =
+          "Demo result: Signature could not be verified.";
+      }
+
+      const total = document.getElementById("totalScans");
+      const success = document.getElementById("verifiedCount");
+      const failed = document.getElementById("failedCount");
+      const history = document.getElementById("historyList");
+
+      total.textContent = Number(total.textContent) + 1;
+
+      if (verified) {
+        success.textContent = Number(success.textContent) + 1;
+      } else {
+        failed.textContent = Number(failed.textContent) + 1;
+      }
+
+      if (history.textContent.includes("No scan history")) {
+        history.innerHTML = "";
+      }
+
+      const item = document.createElement("div");
+      item.className = "history-item";
+      item.textContent =
+        file.name + " — " + (verified ? "VERIFIED (DEMO)" : "NOT VERIFIED (DEMO)");
+
+      history.prepend(item);
+
+      verifyBtn.disabled = false;
+      verifyBtn.textContent = "CHECK DOCUMENT";
+
+      // Sound
+      try {
+        const audio = new AudioContext();
+        const oscillator = audio.createOscillator();
+        const gain = audio.createGain();
+
+        oscillator.connect(gain);
+        gain.connect(audio.destination);
+        oscillator.frequency.value = verified ? 880 : 220;
+        gain.gain.value = 0.12;
+
+        oscillator.start();
+        oscillator.stop(audio.currentTime + 0.25);
+        oscillator.onended = () => audio.close();
+      } catch (error) {
+        console.log("Sound unavailable:", error);
+      }
+
+    }, 1200);
+  });
+}
+
+// SHOW SELECTED FILE
+if (documentInput) {
+  documentInput.addEventListener("change", () => {
+    const file = documentInput.files[0];
+    document.getElementById("fileDetails").textContent =
+      file ? "Selected: " + file.name : "No document selected";
+  });
+}
+
