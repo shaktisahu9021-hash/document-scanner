@@ -1,4 +1,8 @@
 
+/* =====================================
+   GLOMING DOCUMENT VERIFICATION DEMO
+   ===================================== */
+
 const intro = document.getElementById("intro");
 const loginPage = document.getElementById("loginPage");
 const dashboard = document.getElementById("dashboard");
@@ -9,11 +13,16 @@ let selectedFile = null;
 let history = [];
 let cameraStream = null;
 
+// INTRO ANIMATION
 setTimeout(() => {
-  intro.style.display = "none";
+  if (intro) intro.style.display = "none";
 }, 3400);
 
-// DEMO LOGIN: Any non-empty email and password will work.
+
+// =====================================
+// DEMO LOGIN - ANY EMAIL AND PASSWORD
+// =====================================
+
 loginForm.addEventListener("submit", function (e) {
   e.preventDefault();
 
@@ -29,18 +38,28 @@ loginForm.addEventListener("submit", function (e) {
   }
 });
 
+
+// LOGOUT
 document.getElementById("logoutBtn").addEventListener("click", () => {
   stopCamera();
+
   dashboard.classList.add("hidden");
   loginPage.classList.remove("hidden");
+
   loginForm.reset();
 });
+
+
+// =====================================
+// DOCUMENT UPLOAD
+// =====================================
 
 const documentInput = document.getElementById("documentInput");
 const verifyBtn = document.getElementById("verifyBtn");
 
 documentInput.addEventListener("change", () => {
   const file = documentInput.files[0];
+
   if (!file) return;
 
   const allowedTypes = [
@@ -50,48 +69,78 @@ documentInput.addEventListener("change", () => {
   ];
 
   if (!allowedTypes.includes(file.type) || file.size > 10 * 1024 * 1024) {
-    alert("Please choose a PDF, JPG or PNG file up to 10 MB.");
+    alert("Only PDF, JPG and PNG files up to 10 MB are allowed.");
+
     documentInput.value = "";
     selectedFile = null;
     verifyBtn.disabled = true;
+
     return;
   }
 
   selectedFile = file;
-  document.getElementById("fileDetails").textContent =
-    "📄 " + file.name + " · " + (file.size / 1024).toFixed(1) + " KB";
-  document.getElementById("fileDetails").classList.remove("hidden");
+
+  const details = document.getElementById("fileDetails");
+
+  details.textContent =
+    "📄 " + file.name + " · " +
+    (file.size / 1024).toFixed(1) + " KB";
+
+  details.classList.remove("hidden");
+
   verifyBtn.disabled = false;
 });
 
+
+// =====================================
+// DEMO VERIFICATION
+// =====================================
+
 verifyBtn.addEventListener("click", () => {
+
   if (!selectedFile) return;
 
   verifyBtn.disabled = true;
-  verifyBtn.textContent = "Checking document...";
+  verifyBtn.textContent = "Checking Document...";
 
-  document.getElementById("resultPlaceholder").classList.add("hidden");
-  document.getElementById("resultBox").classList.add("hidden");
+  document.getElementById("resultPlaceholder")
+    .classList.add("hidden");
+
+  document.getElementById("resultBox")
+    .classList.add("hidden");
 
   setTimeout(() => {
-    // DEMO ONLY: 15% simulated green, 85% simulated red.
-    // This is not cryptographic signature verification.
+
+    // SIMULATED DEMO RESULT:
+    // Approximately 15% green and 85% red.
+    // This does NOT verify a real digital signature.
     const verified = Math.random() < 0.15;
 
     showResult(verified, selectedFile.name);
 
     verifyBtn.disabled = false;
     verifyBtn.textContent = "Verify Document";
+
   }, 1800);
+
 });
 
+
+// =====================================
+// SOUND SYSTEM
+// =====================================
+
 function playTone(frequency, duration, delay = 0) {
-  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+
+  const AudioContextClass =
+    window.AudioContext || window.webkitAudioContext;
+
   if (!AudioContextClass) return;
 
   const audioContext = new AudioContextClass();
 
   audioContext.resume().then(() => {
+
     const oscillator = audioContext.createOscillator();
     const gain = audioContext.createGain();
 
@@ -102,32 +151,56 @@ function playTone(frequency, duration, delay = 0) {
     oscillator.type = "sine";
 
     const start = audioContext.currentTime + delay;
+
     gain.gain.setValueAtTime(0.12, start);
-    gain.gain.exponentialRampToValueAtTime(0.001, start + duration);
+
+    gain.gain.exponentialRampToValueAtTime(
+      0.001,
+      start + duration
+    );
 
     oscillator.start(start);
     oscillator.stop(start + duration);
 
-    setTimeout(() => audioContext.close(), (delay + duration) * 1000 + 200);
+    setTimeout(() => audioContext.close(), 1000);
+
   }).catch(() => {});
+
 }
 
 function playResultSound(verified) {
+
   if (verified) {
+
     playTone(880, 0.18);
     playTone(1175, 0.25, 0.2);
+
   } else {
+
     playTone(300, 0.35);
+
   }
+
 }
 
+
+// =====================================
+// SHOW VERIFICATION RESULT
+// =====================================
+
 function showResult(verified, fileName) {
+
   playResultSound(verified);
 
   const box = document.getElementById("resultBox");
-  box.className = "result-box " + (verified ? "verified" : "not-verified");
 
-  document.getElementById("resultIcon").textContent = verified ? "✓" : "✕";
+  box.className =
+    "result-box " +
+    (verified ? "verified" : "not-verified");
+
+  document.getElementById("resultIcon").textContent =
+    verified ? "✓" : "✕";
+
   document.getElementById("resultTitle").textContent =
     verified ? "VERIFIED" : "NOT VERIFIED";
 
@@ -139,33 +212,59 @@ function showResult(verified, fileName) {
   box.classList.remove("hidden");
 
   history.unshift({
+
     name: fileName,
-    status: verified ? "VERIFIED (DEMO)" : "NOT VERIFIED",
+
+    status: verified
+      ? "VERIFIED (DEMO)"
+      : "NOT VERIFIED",
+
     time: new Date().toLocaleTimeString()
+
   });
 
   updateDashboard();
+
 }
 
+
+// =====================================
+// DASHBOARD HISTORY
+// =====================================
+
 function updateDashboard() {
-  document.getElementById("totalScans").textContent = history.length;
+
+  document.getElementById("totalScans").textContent =
+    history.length;
+
   document.getElementById("verifiedCount").textContent =
-    history.filter(item => item.status === "VERIFIED (DEMO)").length;
+    history.filter(item =>
+      item.status === "VERIFIED (DEMO)"
+    ).length;
+
   document.getElementById("failedCount").textContent =
-    history.filter(item => item.status === "NOT VERIFIED").length;
+    history.filter(item =>
+      item.status === "NOT VERIFIED"
+    ).length;
 
   const list = document.getElementById("historyList");
+
   list.replaceChildren();
 
   if (!history.length) {
+
     const empty = document.createElement("p");
+
     empty.className = "empty-history";
     empty.textContent = "No documents scanned yet.";
+
     list.appendChild(empty);
+
     return;
   }
 
   history.forEach(item => {
+
     const row = document.createElement("div");
     row.className = "history-item";
 
@@ -173,91 +272,186 @@ function updateDashboard() {
     name.textContent = item.name;
 
     const status = document.createElement("span");
-    status.className = "history-status " +
-      (item.status === "VERIFIED (DEMO)" ? "green" : "red");
+
+    status.className =
+      "history-status " +
+      (item.status === "VERIFIED (DEMO)"
+        ? "green"
+        : "red");
+
     status.textContent = item.status;
 
     const time = document.createElement("span");
     time.textContent = item.time;
 
     row.append(name, status, time);
+
     list.appendChild(row);
+
   });
+
 }
 
-document.getElementById("clearHistory").addEventListener("click", () => {
-  history = [];
-  updateDashboard();
-});
+
+// CLEAR HISTORY
+document.getElementById("clearHistory")
+  .addEventListener("click", () => {
+
+    history = [];
+    updateDashboard();
+
+  });
+
+
+// =====================================
+// GLOMING CAMERA SCANNER
+// =====================================
 
 const camera = document.getElementById("camera");
 const canvas = document.getElementById("canvas");
+
 const cameraBtn = document.getElementById("cameraBtn");
 const captureBtn = document.getElementById("captureBtn");
 
+
+// OPEN / CLOSE CAMERA
 cameraBtn.addEventListener("click", async () => {
+
   if (cameraStream) {
     stopCamera();
     return;
   }
 
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    alert("Camera needs HTTPS or localhost. Please run with VS Code Live Server.");
+  if (
+    !navigator.mediaDevices ||
+    !navigator.mediaDevices.getUserMedia
+  ) {
+
+    alert(
+      "Camera unavailable. Open this website using VS Code Live Server (localhost)."
+    );
+
     return;
   }
 
   try {
+
+    cameraBtn.textContent = "Opening Camera...";
+
     cameraStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: { ideal: "environment" } },
+
+      video: {
+        facingMode: { ideal: "environment" },
+        width: { ideal: 1280 },
+        height: { ideal: 720 }
+      },
+
       audio: false
+
     });
 
     camera.srcObject = cameraStream;
+
     await camera.play();
 
     camera.classList.remove("hidden");
     captureBtn.classList.remove("hidden");
+
     cameraBtn.textContent = "Close Camera";
+
   } catch (error) {
-    alert("Camera could not open: " + error.message +
-      ". Check Chrome camera permission.");
+
     stopCamera();
+
+    alert(
+      "CAMERA ERROR: " +
+      error.message +
+      "\n\nCheck Chrome camera permission and close other apps using the camera."
+    );
+
   }
+
 });
 
+
+// CAPTURE DOCUMENT
 captureBtn.addEventListener("click", () => {
-  if (!camera.videoWidth) return;
+
+  if (!camera.videoWidth) {
+
+    alert("Camera is not ready. Please wait.");
+
+    return;
+  }
 
   canvas.width = camera.videoWidth;
   canvas.height = camera.videoHeight;
-  canvas.getContext("2d").drawImage(camera, 0, 0);
+
+  const context = canvas.getContext("2d");
+
+  context.drawImage(
+    camera,
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
 
   canvas.toBlob(blob => {
+
     if (!blob) {
-      alert("Could not capture image. Please try again.");
+
+      alert("Could not capture image.");
+
       return;
     }
 
-    selectedFile = new File([blob], "camera-scan.jpg", {
-      type: "image/jpeg"
-    });
+    selectedFile = new File(
+      [blob],
+      "GLOMING-Camera-Scan.jpg",
+      { type: "image/jpeg" }
+    );
 
-    document.getElementById("fileDetails").textContent =
+    const details = document.getElementById("fileDetails");
+
+    details.textContent =
       "📷 Camera scan captured successfully.";
-    document.getElementById("fileDetails").classList.remove("hidden");
+
+    details.classList.remove("hidden");
+
     verifyBtn.disabled = false;
+
     stopCamera();
-  }, "image/jpeg");
+
+  }, "image/jpeg", 0.92);
+
 });
 
+
+// STOP CAMERA
 function stopCamera() {
+
   if (cameraStream) {
-    cameraStream.getTracks().forEach(track => track.stop());
+
+    cameraStream.getTracks().forEach(track => {
+      track.stop();
+    });
+
     cameraStream = null;
+
   }
 
   camera.srcObject = null;
+
   camera.classList.add("hidden");
+
   captureBtn.classList.add("hidden");
+
   cameraBtn.textContent = "Open Camera";
+
 }
+
+
+// =====================================
+// END OF GLOMING DEMO SCRIPT
+// =====================================
