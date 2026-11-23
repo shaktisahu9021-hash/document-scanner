@@ -89,6 +89,35 @@ verifyBtn.addEventListener("click", () => {
 });
 
 function showResult(verified, fileName) {
+  // GLOMING verification sound
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+function playTone(frequency, duration) {
+  const oscillator = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+
+  oscillator.connect(gain);
+  gain.connect(audioContext.destination);
+
+  oscillator.frequency.value = frequency;
+  oscillator.type = "sine";
+
+  gain.gain.setValueAtTime(0.15, audioContext.currentTime);
+  gain.gain.exponentialRampToValueAtTime(
+    0.001,
+    audioContext.currentTime + duration
+  );
+
+  oscillator.start();
+  oscillator.stop(audioContext.currentTime + duration);
+}
+
+if (verified) {
+  playTone(880, 0.18);
+  setTimeout(() => playTone(1175, 0.25), 180);
+} else {
+  playTone(300, 0.35);
+}
   const box = document.getElementById("resultBox");
   box.className = "result-box " + (verified ? "verified" : "not-verified");
 
