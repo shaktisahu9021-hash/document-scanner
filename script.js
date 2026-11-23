@@ -79,7 +79,7 @@ verifyBtn.addEventListener("click", () => {
   setTimeout(() => {
     // DEMO ONLY: This is a simulated result, not signature verification.
     // Default result is NOT VERIFIED to avoid false verification claims.
-  const verified = Math.random() >= 0.5;
+  const verified = Math.random() >= 0.10;
 
     showResult(verified, selectedFile.name);
 
